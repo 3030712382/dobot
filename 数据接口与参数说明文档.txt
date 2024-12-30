@@ -1,0 +1,151 @@
+服务器域名：cirnoiris.cn
+SSH端口：19332
+账号：LiuXing
+密码：pR7}yL2>dI5*
+19329
+pip install huggingface_hub==0.25.2 -i https://pypi.tuna.tsinghua.edu.cn/simple
+export PYTHONPATH=/home/LiuXing/dobot/dobot_xtrainer/
+export PYTHONPATH=/home/LiuX ing/dobot/diffusion/
+
+
+
+cp38-cp38-linux_x86_64
+cp38-cp38-linux_x86_64.
+
+torch-1.12.1+cu116-cp39-abi3-win_amd64.whl
+
+torch-1.12.1+cu116-cp39-abi3-win_amd64.whl 
+
+torch-1.12.1+cu116-cp39-abi3-win_amd64.whl
+
+VTK-8.2.0-cp38-cp38-win32.whl
+VTK-8.2.0-cp38-cp38-win_amd64.whl
+-cp38-cp38-linux_x86_64.
+-cp38-cp38-linux_x86_64
+
+如果想通过修改 `.bashrc` 文件在激活特定的 `conda` 虚拟环境时自动设置 `PYTHONPATH`，可以通过在 `.bashrc` 中添加逻辑实现。
+
+以下是具体步骤：
+
+---
+
+### 1. **编辑 `.bashrc` 文件**
+使用以下命令打开 `.bashrc` 文件：
+```bash
+nano ~/.bashrc
+```
+
+---
+
+### 2. **添加逻辑到 `.bashrc`**
+在 `.bashrc` 文件的末尾添加以下内容：
+
+```bash
+# 根据 conda 环境设置 PYTHONPATH
+export CONDA_ENV_NAME=""
+
+# Hook到conda activate命令
+conda() {
+    if [[ "$1" == "activate" ]]; then
+        export CONDA_ENV_NAME="$2"
+        if [[ "$CONDA_ENV_NAME" == "diffusion" ]]; then
+            export PYTHONPATH="/home/LiuXing/dobot/diffusion:$(find /home/LiuXing/dobot/diffusion -type d | tr '\n' ':')"
+        elif [[ "$CONDA_ENV_NAME" == "act" ]]; then
+            export PYTHONPATH="/home/LiuXing/dobot/dobot_xtrainer:$(find /home/LiuXing/dobot/dobot_xtrainer -type d | tr '\n' ':')"
+        else
+            unset PYTHONPATH
+        fi
+    fi
+    command conda "$@"
+}
+```
+
+---
+
+### 3. **说明脚本内容**
+- **`CONDA_ENV_NAME`**：通过环境变量记录当前激活的 `conda` 环境。
+- **`PYTHONPATH`**：
+  - 如果激活 `diffusion` 环境，则 `PYTHONPATH` 自动设置为 `/home/LiuXing/dobot/diffusion` 及其子目录。
+  - 如果激活 `act` 环境，则 `PYTHONPATH` 自动设置为 `/home/LiuXing/dobot/dobot_xtrainer` 及其子目录。
+  - 如果激活的环境不是 `diffusion` 或 `act`，则清除 `PYTHONPATH`。
+- **`conda()`**：通过重定义 `conda` 命令，拦截 `conda activate` 命令，执行环境切换时的逻辑。
+
+---
+
+### 4. **应用修改**
+保存文件后，运行以下命令让 `.bashrc` 生效：
+```bash
+source ~/.bashrc
+```
+
+---
+
+### 5. **验证配置**
+测试环境激活后 `PYTHONPATH` 是否正确设置：
+
+#### 激活 `diffusion` 环境：
+```bash
+conda activate diffusion
+echo $PYTHONPATH
+```
+输出应该类似于：
+```
+/home/LiuXing/dobot/diffusion:/home/LiuXing/dobot/diffusion/子文件夹1:/home/LiuXing/dobot/diffusion/子文件夹2:...
+```
+
+#### 激活 `act` 环境：
+```bash
+conda activate act
+echo $PYTHONPATH
+```
+输出应该类似于：
+```
+/home/LiuXing/dobot/dobot_xtrainer:/home/LiuXing/dobot/dobot_xtrainer/子文件夹1:/home/LiuXing/dobot/dobot_xtrainer/子文件夹2:...
+```
+
+#### 退出环境：
+```bash
+conda deactivate
+echo $PYTHONPATH
+```
+输出应该为空。
+
+---
+
+通过以上步骤，无需额外的 `deactivate.d` 脚本即可在 `.bashrc` 中设置不同 `conda` 环境的 `PYTHONPATH`，实现按需切换路径的功能。
+
+
+
+import os
+import h5py
+
+# 定义源文件路径和目标文件夹路径
+source_file_path = "/path/to/source/file.hdf5"  # 另一个.hdf5文件，获取新的 'left' 值
+target_folder_path = "/path/to/target/folder"  # 目标文件夹，包含所有要修改的 .hdf5 文件
+
+# 读取源文件中的 'left' 值
+def get_left_value_from_source(source_file_path):
+    with h5py.File(source_file_path, 'r') as f:
+        # 假设 'action' 存储在文件的根目录下
+        action = f['action']
+        left_value = action['left'][()]  # 获取 'left' 的数据
+    return left_value
+
+# 修改目标文件中的 'left' 值
+def modify_left_in_file(target_file_path, new_left_value):
+    with h5py.File(target_file_path, 'r+') as f:
+        # 假设 'action' 存储在文件的根目录下
+        action = f['action']
+        action['left'][...] = new_left_value  # 修改 'left' 的值为新的
+
+# 获取源文件中的 'left' 值
+new_left_value = get_left_value_from_source(source_file_path)
+
+# 遍历目标文件夹中的所有 .hdf5 文件，并修改 'left' 值
+for filename in os.listdir(target_folder_path):
+    if filename.endswith(".hdf5"):
+        target_file_path = os.path.join(target_folder_path, filename)
+        print(f"Modifying {target_file_path}...")
+        modify_left_in_file(target_file_path, new_left_value)
+
+print("Modification completed.")

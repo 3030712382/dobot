@@ -1,0 +1,23 @@
+# Third-Party Licenses
+
+This project uses code from other projects under the MIT license. Here are the details for each:
+
+## GELLO: A General, Low-Cost, and Intuitive Teleoperation Framework for Robot Manipulators
+
+- **Name**: GELLO: A General, Low-Cost, and Intuitive Teleoperation Framework for Robot Manipulators
+- **Author**: Philipp Wu
+- **License**: MIT
+- **Copyright Notice**: Copyright (c) 2023 Philipp Wu
+- **Reference**: https://github.com/wuphilipp/gello_software
+
+## Imitation Learning algorithms and Co-training for Mobile ALOHA
+
+- **Name**: Imitation Learning algorithms and Co-training for Mobile ALOHA
+- **Author**: Tony Z. Zhao
+- **License**: MIT
+- **Copyright Notice**: Copyright (c) 2023 Tony Z. Zhao
+- **Reference**: https://github.com/MarkFzp/act-plus-plus
+
+## License Texts
+
+For the full text of the licenses, please refer to the original repositories or the LICENSE files included with their distributions.

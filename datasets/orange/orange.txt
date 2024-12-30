@@ -1,0 +1,13 @@
+抓橘子数据集40轮 链接: https://pan.baidu.com/s/1X_KyoF7-nZzE62ZiaZpeDw?pwd=c6m1 提取码: c6m1
+
+DATA_DIR = str(Path(__file__).parent.parent.parent / "datasets/")
+# DATA_DIR = '/home/zz/User_dobot/datasets/'
+TASK_CONFIGS = {
+    # dobot move cube new
+    'orange': {
+        'dataset_dir': DATA_DIR + '/dataset_package_test',
+        'episode_len': 700,
+        'train_ratio': 0.9,
+        'camera_names': ['top', 'left_wrist', 'right_wrist']
+    },
+}

@@ -1,0 +1,4 @@
+原始训练代码报错：ImportError: cannot import name 'cached_download' from 'huggingface_hub' (/home/oem/anaconda3/envs/diffusion/lib/python3.8/site-packages/huggingface_hub/__init__.py)
+安装：
+pip install huggingface_hub==0.25.2 -i https://pypi.tuna.tsinghua.edu.cn/simple
+export PYTHONPATH=/home/oem/diffusion/
